@@ -14,6 +14,7 @@ const getAll = async (req, res) => {
 
   const { page = 1, limit = 3 } = req.query;
   const skip = (page - 1) * limit;
+
   const result = await Contact.find({ owner }, "-createAt -updateAt", {
     skip,
     limit,
@@ -24,6 +25,11 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   const { contactId } = req.params;
   const result = await Contact.findById(contactId).exec();
+
+  if (req.user._id.toString() !== result.owner.toString()) {
+    throw HttpError(403, "Forbidden");
+  }
+
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -38,6 +44,10 @@ const add = async (req, res) => {
 
 const deleteById = async (req, res) => {
   const { contactId } = req.params;
+  const contact = await Contact.findById(contactId).exec();
+  if (req.user._id.toString() !== contact.owner.toString()) {
+    throw HttpError(403, "Forbidden");
+  }
   const result = await Contact.findByIdAndDelete({ _id: contactId });
   if (!result) {
     throw HttpError(404, "Not found");
@@ -47,6 +57,10 @@ const deleteById = async (req, res) => {
 
 const updateById = async (req, res) => {
   const { contactId } = req.params;
+  const contact = await Contact.findById(contactId).exec();
+  if (req.user._id.toString() !== contact.owner.toString()) {
+    throw HttpError(403, "Forbidden");
+  }
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
   });
