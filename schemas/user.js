@@ -16,10 +16,15 @@ const updateSubSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business"),
 });
 
+const updateAvatarSchema = Joi.object({
+  avatar: { file: Joi.any() },
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
   updateSubSchema,
+  updateAvatarSchema,
 };
 
 module.exports = schemas;
