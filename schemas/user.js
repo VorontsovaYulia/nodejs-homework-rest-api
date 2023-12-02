@@ -16,10 +16,15 @@ const updateSubSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business"),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegex).required(),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
   updateSubSchema,
+  emailSchema,
 };
 
 module.exports = schemas;
