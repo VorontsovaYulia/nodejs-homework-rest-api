@@ -1,6 +1,6 @@
 const multer = require("multer");
 const path = require("path");
-const { HttpError, ctrlWrapper } = require("../helpers");
+const { HttpError } = require("../helpers");
 
 const tempDir = path.join(__dirname, "../", "temp");
 
